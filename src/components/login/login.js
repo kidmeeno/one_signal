@@ -1,7 +1,7 @@
 import React, {component, useState} from 'react';
 
 const Login = () => {
-    const[username, password] = useState(0)
+    const[username, password] = useState('')
     return(
         <div>
             <form>
