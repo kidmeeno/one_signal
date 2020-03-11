@@ -34,6 +34,8 @@ function App() {
             console.log("error",e)
           })
           // this.saveUserDetails(userId);
+        }).catch((err)=>{
+          console.log("error don show", err);
         });
       });
     };
