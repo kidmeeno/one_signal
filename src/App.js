@@ -24,12 +24,15 @@ function App() {
       notificationPrompt();
       var OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
+        console.log("1===")
         OneSignal.getUserId().then(userId => {
           var body = { email: "groovya2@test.com", id: userId }
           console.log("One signal -> ", userId)
           Axios.post("", body).then((res) => {
             console.log("we are doing this", res)
-          }).catch()
+          }).catch(e=>{
+            console.log("error",e)
+          })
           // this.saveUserDetails(userId);
         });
       });
