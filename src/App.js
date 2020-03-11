@@ -15,6 +15,23 @@ function App() {
     });
   }
 
+  const setStatus = () => {
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(() => {
+      OneSignal.on("subscriptionChange", (sub)=>{
+        if (sub){
+          OneSignal.push(()=>{
+            OneSignal.getUserId().then(userId => {
+              alert(userId)
+            })
+          })
+        } else {
+          alert(' not allowed yet')
+        }
+      });
+    });
+  }
+
   const loadSignalScript = () => {
     const script = document.createElement("script");
     script.id = 'signalScript';
@@ -22,17 +39,19 @@ function App() {
     script.async = true;
     script.onreadystatechange = () => {
       notificationPrompt();
+      setStatus();
+      
       var OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
         console.log("1===")
         OneSignal.getUserId().then(userId => {
-          var body = { email: "groovya2@test.com", id: userId }
+          // var body = { email: "groovya2@test.com", id: userId }
           console.log("One signal -> ", userId)
-          Axios.post("", body).then((res) => {
-            console.log("we are doing this", res)
-          }).catch(e=>{
-            console.log("error",e)
-          })
+          // Axios.post("", body).then((res) => {
+          //   console.log("we are doing this", res)
+          // }).catch(e=>{
+          //   console.log("error",e)
+          // })
           // this.saveUserDetails(userId);
         }).catch((err)=>{
           console.log("error don show", err);
