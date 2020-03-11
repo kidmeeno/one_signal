@@ -9,15 +9,6 @@ function App() {
   const notificationPrompt = () => {
     var OneSignal = window.OneSignal || [];
     OneSignal.push(() => {
-      OneSignal.registerForPushNotifications({
-        modalPrompt: true
-      });
-    });
-  }
-
-  const setStatus = () => {
-    var OneSignal = window.OneSignal || [];
-    OneSignal.push(() => {
       OneSignal.on("subscriptionChange", (sub)=>{
         if (sub){
           OneSignal.push(()=>{
@@ -29,6 +20,10 @@ function App() {
           alert(' not allowed yet')
         }
       });
+
+      OneSignal.registerForPushNotifications({
+        modalPrompt: true
+      });
     });
   }
 
@@ -39,8 +34,7 @@ function App() {
     script.async = true;
     script.onreadystatechange = () => {
       notificationPrompt();
-      setStatus();
-      
+      alert(888)
       var OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
         console.log("1===")
