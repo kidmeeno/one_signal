@@ -32,12 +32,12 @@ function App() {
     script.id = 'signalScript';
     script.src = "https://cdn.onesignal.com/sdks/OneSignalSDK.js";
     script.async = true;
-    script.onreadystatechange = () => {
+    script.onreadystatechange = async () => {
       // notificationPrompt();
      
       var OneSignal = window.OneSignal || [];
-      OneSignal.push(() => {
-        OneSignal.registerForPushNotifications({
+      OneSignal.push(async() => {
+        await OneSignal.registerForPushNotifications({
           modalPrompt: true
         });
         alert(888)
