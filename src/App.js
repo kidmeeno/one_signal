@@ -6,26 +6,26 @@ import Axios from 'axios';
 
 function App() {
 
-  const notificationPrompt = () => {
-    var OneSignal = window.OneSignal || [];
-    OneSignal.push(() => {
-      OneSignal.on("subscriptionChange", (sub)=>{
-        if (sub){
-          OneSignal.push(()=>{
-            OneSignal.getUserId().then(userId => {
-              alert(userId)
-            })
-          })
-        } else {
-          alert(' not allowed yet')
-        }
-      });
+  // const notificationPrompt = () => {
+  //   var OneSignal = window.OneSignal || [];
+  //   OneSignal.push(() => {
+  //     OneSignal.on("subscriptionChange", (sub)=>{
+  //       if (sub){
+  //         OneSignal.push(()=>{
+  //           OneSignal.getUserId().then(userId => {
+  //             alert(userId)
+  //           })
+  //         })
+  //       } else {
+  //         alert(' not allowed yet')
+  //       }
+  //     });
 
-      OneSignal.registerForPushNotifications({
-        modalPrompt: true
-      });
-    });
-  }
+  //     OneSignal.registerForPushNotifications({
+  //       modalPrompt: true
+  //     });
+  //   });
+  // }
 
   const loadSignalScript = () => {
     const script = document.createElement("script");
@@ -33,10 +33,14 @@ function App() {
     script.src = "https://cdn.onesignal.com/sdks/OneSignalSDK.js";
     script.async = true;
     script.onreadystatechange = () => {
-      notificationPrompt();
-      alert(888)
+      // notificationPrompt();
+     
       var OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
+        OneSignal.registerForPushNotifications({
+          modalPrompt: true
+        });
+        alert(888)
         console.log("1===")
         OneSignal.getUserId().then(userId => {
           // var body = { email: "groovya2@test.com", id: userId }
