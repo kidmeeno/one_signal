@@ -40,7 +40,7 @@ function App() {
         await OneSignal.registerForPushNotifications({
           modalPrompt: true
         });
-        alert(888)
+        // alert(888)
         console.log("1===")
         OneSignal.getUserId().then(userId => {
           var body = { email: "groovya2@test.com", id: userId }
@@ -57,12 +57,12 @@ function App() {
       });
     };
     script.onload = script.onreadystatechange;
-    script.innerHTML = `var OneSignal = window.OneSignal || [];
-                   OneSignal.push(function () {
-                     OneSignal.init({
-                       appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec"
-                     });
-                   });`;
+    // script.innerHTML = `var OneSignal = window.OneSignal || [];
+    //                OneSignal.push(function () {
+    //                  OneSignal.init({
+    //                    appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec"
+    //                  });
+    //                });`;
     document.body.appendChild(script);
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
