@@ -34,18 +34,14 @@ function App() {
     script.async = true;
     script.onreadystatechange = async () => {
       // notificationPrompt();
-
       var OneSignal = window.OneSignal || [];
       OneSignal.push(async () => {
+        alert(888)
         await OneSignal.registerForPushNotifications({
           modalPrompt: true
         });
-        // alert(888)
         console.log("coming second")
-      });
-
-      OneSignal.push(() => {
-        OneSignal.getUserId().then(userId => {
+        await OneSignal.getUserId().then(userId => {
           // var body = { email: "groovya2@test.com", id: userId }
           console.log("One signal -> ", userId)
           // Axios.post("", body).then((res) => {
@@ -57,7 +53,7 @@ function App() {
         }).catch((err) => {
           console.log("error don show", err);
         });
-      })
+      });
     };
     script.onload = script.onreadystatechange;
     script.innerHTML = `var OneSignal = window.OneSignal || [];
