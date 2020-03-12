@@ -68,7 +68,7 @@ function App() {
     window.eval(signalScript);
   }
   useEffect(() => {
-    loadSignalScript();
+    // loadSignalScript();
   }, [])
   return (
     <div className="App">
