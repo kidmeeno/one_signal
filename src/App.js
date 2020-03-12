@@ -61,13 +61,30 @@ function App() {
   }
   const signalScriptLoad = () => {
     var OneSignal = window.OneSignal || [];
-    // OneSignal.showNativePrompt()
+    // testing for push notification anabling
+    OneSignal.push(function() {
+      /* These examples are all valid */
+      OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+        if (isEnabled)
+          console.log("Push notifications are enabled!");
+        else
+          console.log("Push notifications are not enabled yet.");    
+      });
+                   
+      OneSignal.isPushNotificationsEnabled().then(function(isEnabled) {
+        if (isEnabled)
+          console.log("Push notifications are enabled!");
+        else
+          console.log("Push notifications are not enabled yet.");      
+      });
+    });
+    // ends here
     OneSignal.push(["getNotificationPermission", function (permission) {
       console.log("Site Notification Permission:", permission);
       // (Output) Site Notification Permission: default
       if(permission == "default"){
         console.log("this guy never accept nor reject")
-        // OneSignal.showSlidedownPrompt();
+        OneSignal.showSlidedownPrompt();
         OneSignal.showNativePrompt();
       }else if(permission == "granted"){
         alert("this guy don accepted")
