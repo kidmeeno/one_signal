@@ -5,7 +5,6 @@ import Login from './components/login/login';
 import Axios from 'axios';
 
 function App() {
-
   // const notificationPrompt = () => {
   //   var OneSignal = window.OneSignal || [];
   //   OneSignal.push(() => {
@@ -26,7 +25,6 @@ function App() {
   //     });
   //   });
   // }
-
   const loadSignalScript = () => {
     const script = document.createElement("script");
     script.id = 'signalScript';
@@ -42,7 +40,7 @@ function App() {
         }).then(() => {
           alert("in registration")
           console.log(registering.modalPrompt)
-          OneSignal.getUserId((Id)=>{
+          OneSignal.getUserId((Id) => {
             alert("in get user id")
             console.log("One signal -> ", Id)
           })
@@ -61,14 +59,23 @@ function App() {
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
   }
-
-  const signalScriptLoad = () =>{
+  const signalScriptLoad = () => {
     var OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
+    // OneSignal.showNativePrompt()
+    OneSignal.push(["getNotificationPermission", function (permission) {
+      console.log("Site Notification Permission:", permission);
+      // (Output) Site Notification Permission: default
+    }]);
+    OneSignal.push(function () {
+      OneSignal.showSlidedownPrompt();
       OneSignal.on('permissionPromptDisplay', function () {
         console.log("The prompt displayed");
       });
     });
+    OneSignal.push(["getNotificationPermission", function (permission) {
+      console.log("Site Notification Permission:", permission);
+      // (Output) Site Notification Permission: default
+    }]);
   }
   useEffect(() => {
     signalScriptLoad();
