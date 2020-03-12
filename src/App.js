@@ -37,22 +37,25 @@ function App() {
       var OneSignal = window.OneSignal || [];
       OneSignal.push(async () => {
         alert(888)
-        await OneSignal.registerForPushNotifications({
+        var registering = OneSignal.registerForPushNotifications({
           modalPrompt: true
+        }).then(() => {
+          alert("in registration")
+          OneSignal.getUserId().then(userId => {
+            alert("in get user id")
+            // var body = { email: "groovya2@test.com", id: userId }
+            console.log("One signal -> ", userId)
+            // Axios.post("", body).then((res) => {
+            //   console.log("we are doing this", res)
+            // }).catch(e => {
+            //   console.log("error", e)
+            // })
+            this.saveUserDetails(userId);
+          }).catch((err) => {
+            console.log("error don show", err);
+          })
         });
-        console.log("coming second")
-        await OneSignal.getUserId().then(userId => {
-          // var body = { email: "groovya2@test.com", id: userId }
-          console.log("One signal -> ", userId)
-          // Axios.post("", body).then((res) => {
-          //   console.log("we are doing this", res)
-          // }).catch(e => {
-          //   console.log("error", e)
-          // })
-          this.saveUserDetails(userId);
-        }).catch((err) => {
-          console.log("error don show", err);
-        });
+        console.log("coming second", registering)
       });
     };
     script.onload = script.onreadystatechange;
