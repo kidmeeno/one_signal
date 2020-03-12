@@ -44,7 +44,6 @@ function App() {
           console.log(registering.modalPrompt)
           OneSignal.getUserId((Id)=>{
             alert("in get user id")
-
             console.log("One signal -> ", Id)
           })
         });
@@ -62,8 +61,17 @@ function App() {
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
   }
+
+  const signalScriptLoad = () =>{
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.on('permissionPromptDisplay', function () {
+        console.log("The prompt displayed");
+      });
+    });
+  }
   useEffect(() => {
-    loadSignalScript();
+    signalScriptLoad();
   }, [])
   return (
     <div className="App">
