@@ -41,18 +41,11 @@ function App() {
           modalPrompt: true
         }).then(() => {
           alert("in registration")
-          OneSignal.getUserId().then(userId => {
+          console.log(registering.modalPrompt)
+          OneSignal.getUserId((Id)=>{
             alert("in get user id")
-            // var body = { email: "groovya2@test.com", id: userId }
-            console.log("One signal -> ", userId)
-            // Axios.post("", body).then((res) => {
-            //   console.log("we are doing this", res)
-            // }).catch(e => {
-            //   console.log("error", e)
-            // })
-            this.saveUserDetails(userId);
-          }).catch((err) => {
-            console.log("error don show", err);
+
+            console.log("One signal -> ", Id)
           })
         });
         console.log("coming second", registering)
