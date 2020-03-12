@@ -41,15 +41,15 @@ function App() {
           modalPrompt: true
         });
         // alert(888)
-        console.log("1===")
+        console.log("coming second")
         OneSignal.getUserId().then(userId => {
-          var body = { email: "groovya2@test.com", id: userId }
+          // var body = { email: "groovya2@test.com", id: userId }
           console.log("One signal -> ", userId)
-          Axios.post("", body).then((res) => {
-            console.log("we are doing this", res)
-          }).catch(e => {
-            console.log("error", e)
-          })
+          // Axios.post("", body).then((res) => {
+          //   console.log("we are doing this", res)
+          // }).catch(e => {
+          //   console.log("error", e)
+          // })
           this.saveUserDetails(userId);
         }).catch((err) => {
           console.log("error don show", err);
@@ -57,12 +57,12 @@ function App() {
       });
     };
     script.onload = script.onreadystatechange;
-    // script.innerHTML = `var OneSignal = window.OneSignal || [];
-    //                OneSignal.push(function () {
-    //                  OneSignal.init({
-    //                    appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec"
-    //                  });
-    //                });`;
+    script.innerHTML = `var OneSignal = window.OneSignal || [];
+                   OneSignal.push(function () {
+                     OneSignal.init({
+                       appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec"
+                     });
+                   });`;
     document.body.appendChild(script);
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
