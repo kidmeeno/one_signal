@@ -66,7 +66,9 @@ function App() {
       console.log("Site Notification Permission:", permission);
       // (Output) Site Notification Permission: default
       if(permission == "default"){
-        alert("this guy never accept nor reject")
+        console.log("this guy never accept nor reject")
+        // OneSignal.showSlidedownPrompt();
+        OneSignal.showNativePrompt();
       }else if(permission == "granted"){
         alert("this guy don accepted")
       }else if(permission == "denied"){
