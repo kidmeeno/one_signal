@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import Login from './components/login/login';
@@ -34,24 +34,24 @@ function App() {
     script.async = true;
     script.onreadystatechange = async () => {
       // notificationPrompt();
-     
+
       var OneSignal = window.OneSignal || [];
-      OneSignal.push(async() => {
+      OneSignal.push(async () => {
         await OneSignal.registerForPushNotifications({
           modalPrompt: true
         });
         alert(888)
         console.log("1===")
         OneSignal.getUserId().then(userId => {
-          // var body = { email: "groovya2@test.com", id: userId }
+          var body = { email: "groovya2@test.com", id: userId }
           console.log("One signal -> ", userId)
-          // Axios.post("", body).then((res) => {
-          //   console.log("we are doing this", res)
-          // }).catch(e=>{
-          //   console.log("error",e)
-          // })
-          // this.saveUserDetails(userId);
-        }).catch((err)=>{
+          Axios.post("", body).then((res) => {
+            console.log("we are doing this", res)
+          }).catch(e => {
+            console.log("error", e)
+          })
+          this.saveUserDetails(userId);
+        }).catch((err) => {
           console.log("error don show", err);
         });
       });
@@ -67,26 +67,12 @@ function App() {
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
   }
-  useEffect(()=>{
+  useEffect(() => {
     loadSignalScript();
-  },[])
+  }, [])
   return (
     <div className="App">
       <Login />
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
     </div>
   );
 }
