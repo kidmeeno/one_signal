@@ -65,6 +65,13 @@ function App() {
     OneSignal.push(["getNotificationPermission", function (permission) {
       console.log("Site Notification Permission:", permission);
       // (Output) Site Notification Permission: default
+      if(permission == "default"){
+        alert("this guy never accept nor reject")
+      }else if(permission == "granted"){
+        alert("this guy don accepted")
+      }else if(permission == "denied"){
+        alert("this guy rejected the offer ooo")
+      }
     }]);
     OneSignal.push(function () {
       OneSignal.showSlidedownPrompt();
