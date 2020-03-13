@@ -120,9 +120,18 @@ function App() {
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
         if (isEnabled) {
           console.log("Push notifications are enabled!");
-          OneSignal.getUserId(function (userId) {
-            console.log("OneSignal User ID:", userId);
-            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          OneSignal.push(function () {
+            /* These examples are all valid */
+            OneSignal.getUserId(function (userId) {
+              console.log("OneSignal User ID:", userId);
+              setRemount(false)
+              // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+            });
+
+            // OneSignal.getUserId().then(function (userId) {
+            //   console.log("OneSignal User ID:", userId);
+            //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+            // });
           });
         }
         else
