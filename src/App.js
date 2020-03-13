@@ -65,7 +65,8 @@ function App() {
           // });
           OneSignal.push(function () {
             OneSignal.getUserId(function (userId) {
-              if (userId === null) {
+              console.log("OneSignal User ID:", userId);
+              if (userId == null) {
                 console.log("never show")
               } else {
                 if (currentUserId !== null) {
