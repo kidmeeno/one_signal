@@ -68,11 +68,15 @@ function App() {
                   console.log("bad", currentUserId);
                 } else {
                   console.log("we are good")
-                  // Axios.post(`backend url goes here`).then((res) => {
-                  //   console.log(res)
-                  // }).catch((err) => {
-                  //   console.log(err)
-                  // })
+                  let data = {
+                    email: "testing@test.com",
+                    id: userId
+                  }
+                  Axios.post(`https://onesignalapp.herokuapp.com/api/auth/register`, data).then((res) => {
+                    console.log(res)
+                  }).catch((err) => {
+                    console.log(err)
+                  })
                 }
               }
               setRemount(false)
