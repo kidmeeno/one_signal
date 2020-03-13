@@ -68,11 +68,11 @@ function App() {
                   console.log("bad", currentUserId);
                 } else {
                   console.log("we are good")
-                  Axios.post(`backend url goes here`).then((res) => {
-                    console.log(res)
-                  }).catch((err) => {
-                    console.log(err)
-                  })
+                  // Axios.post(`backend url goes here`).then((res) => {
+                  //   console.log(res)
+                  // }).catch((err) => {
+                  //   console.log(err)
+                  // })
                 }
               }
               setRemount(false)
