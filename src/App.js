@@ -133,18 +133,32 @@ function App() {
         if (isEnabled === true) {
           console.log("Push notifications are enabled!");
           OneSignal.push(function () {
-            /* These examples are all valid */
-            OneSignal.getUserId(function (userId) {
-              console.log("OneSignal User ID:", userId);
-              setRemount(false)
-              // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+            // Occurs when the user's subscription changes to a new value.
+            OneSignal.on('subscriptionChange', function (isSubscribed) {
+              console.log("The user's subscription state is now:", isSubscribed);
+              if (isSubscribed === true){
+                OneSignal.push(function () {
+                  /* These examples are all valid */
+                  OneSignal.getUserId(function (userId) {
+                    console.log("OneSignal User ID:", userId);
+                    setRemount(false)
+                    // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+                  });
+    
+                  // OneSignal.getUserId().then(function (userId) {
+                  //   console.log("OneSignal User ID:", userId);
+                  //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+                  // });
+                });
+  
+              }else{
+                console.log("Dead End")
+              }
+  
             });
-
-            // OneSignal.getUserId().then(function (userId) {
-            //   console.log("OneSignal User ID:", userId);
-            //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-            // });
+            // This event can be listened to via the `on()` or `once()` listener.
           });
+
         }
         else {
           console.log("Push notifications are not enabled yet.");
