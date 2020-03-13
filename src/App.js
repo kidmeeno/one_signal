@@ -12,11 +12,11 @@ function App() {
   //       if (sub){
   //         OneSignal.push(()=>{
   //           OneSignal.getUserId().then(userId => {
-  //             alert(userId)
+  //             console.log(userId)
   //           })
   //         })
   //       } else {
-  //         alert(' not allowed yet')
+  //         console.log(' not allowed yet')
   //       }
   //     });
 
@@ -25,6 +25,7 @@ function App() {
   //     });
   //   });
   // }
+
   const loadSignalScript = () => {
     const script = document.createElement("script");
     script.id = 'signalScript';
@@ -58,7 +59,8 @@ function App() {
     document.body.appendChild(script);
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
-  }
+  };
+
   const registerForOnesignal = () => {
     var OneSignal = window.OneSignal || [];
     OneSignal.push(["getNotificationPermission", function (permission) {
@@ -66,14 +68,23 @@ function App() {
       // (Output) Site Notification Permission: default
       if (permission == "default") {
         console.log("this guy never accept nor reject")
-        OneSignal.showSlidedownPrompt();
         OneSignal.showNativePrompt();
+        OneSignal.showSlidedownPrompt();
       } else if (permission == "granted") {
-        alert("this guy don accepted")
+        OneSignal.showSlidedownPrompt();
+        console.log("this guy don accepted")
       } else if (permission == "denied") {
-        alert("this guy rejected the offer ooo")
+        OneSignal.showNativePrompt();
+        console.log("this guy rejected the offer ooo")
       }
     }]);
+    OneSignal.push(function () {
+      OneSignal.on('notificationPermissionChange', function (permissionChange) {
+        var currentPermission = permissionChange.to;
+        console.log('New permission state:', currentPermission);
+      });
+      // This event can be listened to via the on() or once() listener
+    });
   }
   const signalScriptLoad = () => {
     var OneSignal = window.OneSignal || [];
