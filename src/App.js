@@ -70,7 +70,7 @@ function App() {
       if (permission == "default") {
         console.log("this guy never accept nor reject lalalal")
         // OneSignal.showNativePrompt();
-        OneSignal.push(function() {
+        OneSignal.push(function () {
           OneSignal.showSlidedownPrompt();
           console.log("inside the showSlideDown")
           // setRemount(false)
@@ -84,12 +84,24 @@ function App() {
         console.log("this guy rejected the offer ooo")
       }
     }]);
-    OneSignal.push(function() {
-      OneSignal.on('popoverShown', function() {
+    OneSignal.push(function () {
+      OneSignal.on('popoverShown', function () {
         console.log('Slide Prompt Shown');
       });
-      OneSignal.on('popoverAllowClick', function() {
+      OneSignal.on('popoverAllowClick', function () {
         console.log('accepted the banging');
+        OneSignal.push(function () {
+          /* These examples are all valid */
+          OneSignal.getUserId(function (userId) {
+            console.log("OneSignal User ID:", userId);
+            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          });
+
+          // OneSignal.getUserId().then(function (userId) {
+          //   console.log("OneSignal User ID:", userId);
+          //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          // });
+        });
       });
     });
   }
