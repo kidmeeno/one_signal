@@ -65,11 +65,11 @@ function App() {
                 console.log("never show")
               } else {
                 console.log("heading for final condition");
+                localStorage.setItem('userId', userId);
                 if (currentUserId == null) {
-                  console.log("we are good")
+                  console.log("bad", userId);
                 } else {
-                  localStorage.setItem('userId', userId);
-                  console.log("OneSignal User ID:", userId);
+                  console.log("we are good")
                 }
               }
               setRemount(false)
