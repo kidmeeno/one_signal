@@ -62,21 +62,21 @@ function App() {
             OneSignal.on('subscriptionChange', function (isSubscribed) {
               console.log("The user's subscription state is now:", isSubscribed);
             });
-            if (currentUserId == null) {
-              console.log("wait for it")
-            } else {
-              OneSignal.push(function () {
-                OneSignal.getUserId(function (userId) {
-                  if (userId === null || userId === "") {
-                    console.log("never show")
-                  } else {
+            OneSignal.push(function () {
+              OneSignal.getUserId(function (userId) {
+                if (userId === null) {
+                  console.log("never show")
+                } else {
+                  if (currentUserId !== null) {
                     localStorage.setItem('userId', userId);
                     console.log("OneSignal User ID:", userId);
+                  } else {
+                    console.log("e don be")
                   }
-                  setRemount(false)
-                });
+                }
+                setRemount(false)
               });
-            }
+            });
           });
 
         }
