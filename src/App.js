@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import Login from './components/login/login';
 import Axios from 'axios';
 
 function App() {
-
+  const [remount, setRemount] = useState(true)
   // const notificationPrompt = () => {
   //   var OneSignal = window.OneSignal || [];
   //   OneSignal.push(() => {
@@ -13,11 +13,11 @@ function App() {
   //       if (sub){
   //         OneSignal.push(()=>{
   //           OneSignal.getUserId().then(userId => {
-  //             alert(userId)
+  //             console.log(userId)
   //           })
   //         })
   //       } else {
-  //         alert(' not allowed yet')
+  //         console.log(' not allowed yet')
   //       }
   //     });
 
@@ -41,18 +41,10 @@ function App() {
           modalPrompt: true
         }).then(() => {
           alert("in registration")
-          OneSignal.getUserId().then(userId => {
+          console.log(registering.modalPrompt)
+          OneSignal.getUserId((Id) => {
             alert("in get user id")
-            // var body = { email: "groovya2@test.com", id: userId }
-            console.log("One signal -> ", userId)
-            // Axios.post("", body).then((res) => {
-            //   console.log("we are doing this", res)
-            // }).catch(e => {
-            //   console.log("error", e)
-            // })
-            this.saveUserDetails(userId);
-          }).catch((err) => {
-            console.log("error don show", err);
+            console.log("One signal -> ", Id)
           })
         });
         console.log("coming second", registering)
@@ -68,10 +60,104 @@ function App() {
     document.body.appendChild(script);
     const signalScript = document.getElementById('signalScript').innerHTML;
     window.eval(signalScript);
+  };
+
+  const registerForOnesignal = () => {
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(["getNotificationPermission", function (permission) {
+      console.log("Site Notification Permission:", permission);
+      // (Output) Site Notification Permission: default
+      if (permission == "default") {
+        console.log("this guy never accept nor reject lalalal")
+        // OneSignal.push(function () {
+        //   OneSignal.showSlidedownPrompt();
+        //   console.log("inside the showSlideDown")
+        //   // setRemount(false)
+        // });
+
+        OneSignal.push(function () {
+          OneSignal.registerForPushNotifications();
+        });
+      } else if (permission == "granted") {
+        // OneSignal.showSlidedownPrompt();
+        OneSignal.push(function () {
+          /* These examples are all valid */
+          OneSignal.getUserId(function (userId) {
+            console.log("OneSignal User ID:", userId);
+            setRemount(false)
+            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          });
+
+          // OneSignal.getUserId().then(function (userId) {
+          //   console.log("OneSignal User ID:", userId);
+          //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          // });
+        });
+        console.log("this guy don accepted")
+      } else if (permission == "denied") {
+        console.log("this guy rejected the offer ooo")
+        OneSignal.push(function () {
+          OneSignal.showNativePrompt();
+          OneSignal.registerForPushNotifications();
+        });
+      }
+    }]);
+    OneSignal.push(function () {
+      OneSignal.on('popoverShown', function () {
+        console.log('Slide Prompt Shown');
+      });
+      OneSignal.on('popoverAllowClick', function () {
+        console.log('accepted the banging');
+        OneSignal.push(function () {
+          /* These examples are all valid */
+          OneSignal.getUserId(function (userId) {
+            console.log("OneSignal User ID:", userId);
+            setRemount(false)
+            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          });
+
+          // OneSignal.getUserId().then(function (userId) {
+          //   console.log("OneSignal User ID:", userId);
+          //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          // });
+        });
+      });
+    });
+  }
+  const signalScriptLoad = () => {
+    var OneSignal = window.OneSignal || [];
+    // testing for push notification anabling
+    OneSignal.push(function () {
+      /* These examples are all valid */
+      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+        if (isEnabled === true) {
+          console.log("Push notifications are enabled!");
+          OneSignal.push(function () {
+            /* These examples are all valid */
+            OneSignal.getUserId(function (userId) {
+              console.log("OneSignal User ID:", userId);
+              setRemount(false)
+              // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+            });
+
+            // OneSignal.getUserId().then(function (userId) {
+            //   console.log("OneSignal User ID:", userId);
+            //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+            // });
+          });
+        }
+        else {
+          console.log("Push notifications are not enabled yet.");
+          registerForOnesignal()
+        }
+
+      });
+    });
+    // ends here
   }
   useEffect(() => {
-    loadSignalScript();
-  }, [])
+    signalScriptLoad();
+  }, [remount])
   return (
     <div className="App">
       <Login />
