@@ -5,93 +5,26 @@ import Login from './components/login/login';
 import Axios from 'axios';
 
 function App() {
+
   const [remount, setRemount] = useState(true)
-  // const notificationPrompt = () => {
-  //   var OneSignal = window.OneSignal || [];
-  //   OneSignal.push(() => {
-  //     OneSignal.on("subscriptionChange", (sub)=>{
-  //       if (sub){
-  //         OneSignal.push(()=>{
-  //           OneSignal.getUserId().then(userId => {
-  //             console.log(userId)
-  //           })
-  //         })
-  //       } else {
-  //         console.log(' not allowed yet')
-  //       }
-  //     });
-
-  //     OneSignal.registerForPushNotifications({
-  //       modalPrompt: true
-  //     });
-  //   });
-  // }
-
-  const loadSignalScript = () => {
-    const script = document.createElement("script");
-    script.id = 'signalScript';
-    script.src = "https://cdn.onesignal.com/sdks/OneSignalSDK.js";
-    script.async = true;
-    script.onreadystatechange = async () => {
-      // notificationPrompt();
-      var OneSignal = window.OneSignal || [];
-      OneSignal.push(async () => {
-        alert(888)
-        var registering = OneSignal.registerForPushNotifications({
-          modalPrompt: true
-        }).then(() => {
-          alert("in registration")
-          console.log(registering.modalPrompt)
-          OneSignal.getUserId((Id) => {
-            alert("in get user id")
-            console.log("One signal -> ", Id)
-          })
-        });
-        console.log("coming second", registering)
-      });
-    };
-    script.onload = script.onreadystatechange;
-    script.innerHTML = `var OneSignal = window.OneSignal || [];
-                   OneSignal.push(function () {
-                     OneSignal.init({
-                       appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec"
-                     });
-                   });`;
-    document.body.appendChild(script);
-    const signalScript = document.getElementById('signalScript').innerHTML;
-    window.eval(signalScript);
-  };
+  var OneSignal = window.OneSignal || [];
 
   const registerForOnesignal = () => {
-    var OneSignal = window.OneSignal || [];
+    
     OneSignal.push(["getNotificationPermission", function (permission) {
       console.log("Site Notification Permission:", permission);
-      // (Output) Site Notification Permission: default
       if (permission == "default") {
         console.log("this guy never accept nor reject lalalal")
-        // OneSignal.push(function () {
-        //   OneSignal.showSlidedownPrompt();
-        //   console.log("inside the showSlideDown")
-        //   // setRemount(false)
-        // });
-
         OneSignal.push(function () {
           OneSignal.registerForPushNotifications();
         });
       } else if (permission == "granted") {
-        // OneSignal.showSlidedownPrompt();
         OneSignal.push(function () {
-          /* These examples are all valid */
           OneSignal.getUserId(function (userId) {
             console.log("OneSignal User ID:", userId);
             setRemount(false)
-            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
           });
 
-          // OneSignal.getUserId().then(function (userId) {
-          //   console.log("OneSignal User ID:", userId);
-          //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-          // });
         });
         console.log("this guy don accepted")
       } else if (permission == "denied") {
@@ -102,6 +35,7 @@ function App() {
         });
       }
     }]);
+
     OneSignal.push(function () {
       OneSignal.on('popoverShown', function () {
         console.log('Slide Prompt Shown');
@@ -109,54 +43,30 @@ function App() {
       OneSignal.on('popoverAllowClick', function () {
         console.log('accepted the banging');
         OneSignal.push(function () {
-          /* These examples are all valid */
           OneSignal.getUserId(function (userId) {
             console.log("OneSignal User ID:", userId);
             setRemount(false)
-            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
           });
-
-          // OneSignal.getUserId().then(function (userId) {
-          //   console.log("OneSignal User ID:", userId);
-          //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-          // });
         });
       });
     });
   }
+
   const signalScriptLoad = () => {
-    var OneSignal = window.OneSignal || [];
-    // testing for push notification anabling
     OneSignal.push(function () {
-      /* These examples are all valid */
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
         if (isEnabled === true) {
           console.log("Push notifications are enabled!");
           OneSignal.push(function () {
-            // Occurs when the user's subscription changes to a new value.
             OneSignal.on('subscriptionChange', function (isSubscribed) {
               console.log("The user's subscription state is now:", isSubscribed);
-              if (isSubscribed === true){
-                OneSignal.push(function () {
-                  /* These examples are all valid */
-                  OneSignal.getUserId(function (userId) {
-                    console.log("OneSignal User ID:", userId);
-                    setRemount(false)
-                    // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-                  });
-    
-                  // OneSignal.getUserId().then(function (userId) {
-                  //   console.log("OneSignal User ID:", userId);
-                  //   // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-                  // });
-                });
-  
-              }else{
-                console.log("Dead End")
-              }
-  
             });
-            // This event can be listened to via the `on()` or `once()` listener.
+            OneSignal.push(function () {
+              OneSignal.getUserId(function (userId) {
+                console.log("OneSignal User ID:", userId);
+                setRemount(false)
+              });
+            });
           });
 
         }
