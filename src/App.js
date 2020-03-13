@@ -83,6 +83,17 @@ function App() {
               setRemount(false)
             });
           });
+          OneSignal.push(function () {
+            OneSignal.on('notificationDisplay', function (event) {
+              console.warn('OneSignal notification displayed:', event);
+            });
+
+            //This event can be listened to via the `on()` or `once()` listener
+          });
+          OneSignal.push(["addListenerForNotificationOpened", function (data) {
+            console.log("Received NotificationOpened:");
+            console.log(data);
+          }]);
         }
         else {
           console.log("Push notifications are not enabled yet.");
@@ -91,17 +102,7 @@ function App() {
 
       });
     });
-    OneSignal.push(function() {
-      OneSignal.on('notificationDisplay', function(event) {
-        console.warn('OneSignal notification displayed:', event);
-      });
-      
-      //This event can be listened to via the `on()` or `once()` listener
-    });
-    OneSignal.push(["addListenerForNotificationOpened", function(data) {
-      console.log("Received NotificationOpened:");
-      console.log(data);
-    }]);
+
   }
   useEffect(() => {
     signalScriptLoad();
