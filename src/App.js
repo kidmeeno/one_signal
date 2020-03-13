@@ -67,9 +67,11 @@ function App() {
   }
 
   const signalScriptLoad = () => {
-    OneSignal.push(function () {
-      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-        if (isEnabled === true) {
+    OneSignal.push(function() {
+      // Occurs when the user's subscription changes to a new value.
+      OneSignal.on('subscriptionChange', function (isSubscribed) {
+        console.log("The user's subscription state is now:", isSubscribed);
+        if (isSubscribed === true) {
           console.log("Push notifications are enabled!");
           OneSignal.push(function () {
             OneSignal.getUserId(function (userId) {
@@ -105,6 +107,13 @@ function App() {
             })
           );
         }
+
+      });
+      
+      // This event can be listened to via the `on()` or `once()` listener.
+    });
+    OneSignal.push(function () {
+      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
 
       });
     });
