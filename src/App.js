@@ -59,7 +59,7 @@ function App() {
     }
     if (currentUserId === null) {
       console.log("bad", currentUserId);
-    } else if(currentUserId === "sentToBackend") {
+    } else if(currentUserId === "sendingToBackEnd") {
       Axios.post(`https://onesignalapp.herokuapp.com/api/auth/register`, data).then((res) => {
         console.log(res)
         localStorage.setItem('userId', "sentToBackend");
@@ -67,7 +67,6 @@ function App() {
         console.log(err)
       })
     }
-
   }
 
   const signalScriptLoad = () => {
@@ -80,7 +79,7 @@ function App() {
               if (userId == null) {
                 console.log("never show")
               } else {
-                localStorage.setItem('userId', userId);
+                localStorage.setItem('userId', "sendingToBackEnd");
                 postIdToBackend(userId)
               }
               setRemount(false)
