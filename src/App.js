@@ -68,13 +68,6 @@ function App() {
       // (Output) Site Notification Permission: default
       if (permission == "default") {
         console.log("this guy never accept nor reject")
-        OneSignal.push(function () {
-          OneSignal.on('notificationPermissionChange', function (permissionChange) {
-            var currentPermission = permissionChange.to;
-            console.log('New permission state:', currentPermission);
-          });
-          // This event can be listened to via the on() or once() listener
-        });
         // OneSignal.showNativePrompt();
         OneSignal.showSlidedownPrompt();
       } else if (permission == "granted") {
@@ -85,7 +78,13 @@ function App() {
         console.log("this guy rejected the offer ooo")
       }
     }]);
-
+    // OneSignal.push(function () {
+    //   OneSignal.on('notificationPermissionChange', function (permissionChange) {
+    //     var currentPermission = permissionChange.to;
+    //     console.log('New permission state:', currentPermission);
+    //   });
+    //   // This event can be listened to via the on() or once() listener
+    // });
   }
   const signalScriptLoad = () => {
     var OneSignal = window.OneSignal || [];
