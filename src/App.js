@@ -69,13 +69,17 @@ function App() {
       // (Output) Site Notification Permission: default
       if (permission == "default") {
         console.log("this guy never accept nor reject lalalal")
-        // OneSignal.showNativePrompt();
+        OneSignal.showNativePrompt();
+
+        // OneSignal.push(function () {
+        //   OneSignal.showSlidedownPrompt();
+        //   console.log("inside the showSlideDown")
+        //   // setRemount(false)
+        // });
+
         OneSignal.push(function () {
-          OneSignal.showSlidedownPrompt();
-          console.log("inside the showSlideDown")
-          // setRemount(false)
+          OneSignal.registerForPushNotifications();
         });
-        // OneSignal.showSlidedownPrompt();
       } else if (permission == "granted") {
         OneSignal.showSlidedownPrompt();
         console.log("this guy don accepted")
