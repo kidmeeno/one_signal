@@ -80,7 +80,7 @@ function App() {
         });
       } else if (permission == "granted") {
         // OneSignal.showSlidedownPrompt();
-       
+
         console.log("this guy don accepted")
       } else if (permission == "denied") {
         console.log("this guy rejected the offer ooo")
@@ -118,19 +118,18 @@ function App() {
     OneSignal.push(function () {
       /* These examples are all valid */
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-        if (isEnabled){
+        if (isEnabled === true) {
           console.log("Push notifications are enabled!");
           OneSignal.getUserId(function (userId) {
             console.log("OneSignal User ID:", userId);
             // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
           });
         }
-        else
+        else {
           console.log("Push notifications are not enabled yet.");
-          OneSignal.push(function () {
-            OneSignal.registerForPushNotifications();
-          });
-        // registerForOnesignal()
+          registerForOnesignal()
+        }
+
       });
     });
     // ends here
