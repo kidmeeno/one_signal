@@ -69,8 +69,6 @@ function App() {
       // (Output) Site Notification Permission: default
       if (permission == "default") {
         console.log("this guy never accept nor reject lalalal")
-        OneSignal.showNativePrompt();
-
         // OneSignal.push(function () {
         //   OneSignal.showSlidedownPrompt();
         //   console.log("inside the showSlideDown")
@@ -82,14 +80,14 @@ function App() {
         });
       } else if (permission == "granted") {
         // OneSignal.showSlidedownPrompt();
-        OneSignal.getUserId(function (userId) {
-          console.log("OneSignal User ID:", userId);
-          // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-        });
+
         console.log("this guy don accepted")
       } else if (permission == "denied") {
-        OneSignal.showNativePrompt();
         console.log("this guy rejected the offer ooo")
+        OneSignal.push(function () {
+          OneSignal.showNativePrompt();
+          OneSignal.registerForPushNotifications();
+        });
       }
     }]);
     OneSignal.push(function () {
@@ -102,6 +100,7 @@ function App() {
           /* These examples are all valid */
           OneSignal.getUserId(function (userId) {
             console.log("OneSignal User ID:", userId);
+            setRemount(false)
             // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
           });
 
@@ -119,8 +118,13 @@ function App() {
     OneSignal.push(function () {
       /* These examples are all valid */
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-        if (isEnabled)
+        if (isEnabled) {
           console.log("Push notifications are enabled!");
+          OneSignal.getUserId(function (userId) {
+            console.log("OneSignal User ID:", userId);
+            // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+          });
+        }
         else
           console.log("Push notifications are not enabled yet.");
         registerForOnesignal()
