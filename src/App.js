@@ -57,16 +57,12 @@ function App() {
       email: "testing@test.com",
       id: userid
     }
-    if (currentUserId === null) {
-      console.log("bad", currentUserId);
-    } else if(currentUserId === "sendingToBackEnd") {
-      Axios.post(`https://onesignalapp.herokuapp.com/api/auth/register`, data).then((res) => {
-        console.log(res)
-        localStorage.setItem('userId', "sentToBackend");
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
+    Axios.post(`https://onesignalapp.herokuapp.com/api/auth/register`, data).then((res) => {
+      console.log(res)
+      localStorage.setItem('userId', "sentToBackend");
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   const signalScriptLoad = () => {
@@ -76,11 +72,13 @@ function App() {
           console.log("Push notifications are enabled!");
           OneSignal.push(function () {
             OneSignal.getUserId(function (userId) {
-              if (userId == null) {
+              if (userId == null && currentUserId == null) {
                 console.log("never show")
-              } else {
+              } else if (userId !== null && currentUserId == null) {
                 localStorage.setItem('userId', "sendingToBackEnd");
                 postIdToBackend(userId)
+              } else {
+                console.log("dead end")
               }
               setRemount(false)
             });
