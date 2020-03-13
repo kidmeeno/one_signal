@@ -8,9 +8,10 @@ function App() {
 
   const [remount, setRemount] = useState(true)
   var OneSignal = window.OneSignal || [];
+  var currentUserId = localStorage.getItem('userId');
 
   const registerForOnesignal = () => {
-    
+
     OneSignal.push(["getNotificationPermission", function (permission) {
       console.log("Site Notification Permission:", permission);
       if (permission == "default") {
@@ -61,12 +62,21 @@ function App() {
             OneSignal.on('subscriptionChange', function (isSubscribed) {
               console.log("The user's subscription state is now:", isSubscribed);
             });
-            OneSignal.push(function () {
-              OneSignal.getUserId(function (userId) {
-                console.log("OneSignal User ID:", userId);
-                setRemount(false)
+            if (currentUserId == null) {
+              console.log("wait for it")
+            } else {
+              OneSignal.push(function () {
+                OneSignal.getUserId(function (userId) {
+                  if (userId === null || userId === "") {
+                    console.log("never show")
+                  } else {
+                    localStorage.setItem('userId', userId);
+                    console.log("OneSignal User ID:", userId);
+                  }
+                  setRemount(false)
+                });
               });
-            });
+            }
           });
 
         }
@@ -81,7 +91,7 @@ function App() {
   }
   useEffect(() => {
     signalScriptLoad();
-  }, [remount])
+  }, [])
   return (
     <div className="App">
       <Login />
