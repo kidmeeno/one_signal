@@ -19,19 +19,20 @@ function App() {
           OneSignal.registerForPushNotifications();
         });
       } else if (permission == "granted") {
-        OneSignal.push(function () {
-          OneSignal.getUserId(function (userId) {
-            console.log("OneSignal User ID:", userId);
-            setRemount(false)
-          });
-
-        });
+        OneSignal.push(
+          OneSignal.registerForPushNotifications({
+            modalPrompt: true
+          })
+        );
         console.log("this guy don accepted")
       } else if (permission == "denied") {
         console.log("this guy rejected the offer ooo")
         OneSignal.push(function () {
-          OneSignal.showNativePrompt();
-          OneSignal.registerForPushNotifications();
+          // OneSignal.showNativePrompt();
+          OneSignal.registerForPushNotifications({
+            modalPrompt: true
+          });
+
         });
       }
     }]);
@@ -97,7 +98,12 @@ function App() {
         }
         else {
           console.log("Push notifications are not enabled yet.");
-          registerForOnesignal()
+          // registerForOnesignal()
+          OneSignal.push(
+            OneSignal.registerForPushNotifications({
+              modalPrompt: true
+            })
+          );
         }
 
       });
