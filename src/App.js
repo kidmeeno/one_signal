@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import Login from './components/login/login';
 import Axios from 'axios';
@@ -60,16 +59,20 @@ function App() {
           console.log("Push notifications are enabled!");
           OneSignal.push(function () {
             OneSignal.getUserId(function (userId) {
-              console.log("OneSignal User ID:", userId);
               if (userId == null) {
                 console.log("never show")
               } else {
                 console.log("heading for final condition");
                 localStorage.setItem('userId', userId);
                 if (currentUserId == null) {
-                  console.log("bad", userId);
+                  console.log("bad", currentUserId);
                 } else {
                   console.log("we are good")
+                  Axios.post(`backend url goes here`).then((res) => {
+                    console.log(res)
+                  }).catch((err) => {
+                    console.log(err)
+                  })
                 }
               }
               setRemount(false)
@@ -83,7 +86,6 @@ function App() {
 
       });
     });
-    // ends here
   }
   useEffect(() => {
     signalScriptLoad();
