@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import Login from './components/login/login';
 import Axios from 'axios';
 
 function App() {
+  const [remount, setRemount] = useState(true)
   // const notificationPrompt = () => {
   //   var OneSignal = window.OneSignal || [];
   //   OneSignal.push(() => {
@@ -67,9 +68,14 @@ function App() {
       console.log("Site Notification Permission:", permission);
       // (Output) Site Notification Permission: default
       if (permission == "default") {
-        console.log("this guy never accept nor reject")
-        // OneSignal.showNativePrompt();
-        OneSignal.showSlidedownPrompt();
+        console.log("this guy never accept nor reject lalalal")
+        OneSignal.showNativePrompt();
+        OneSignal.push(function() {
+          OneSignal.showSlidedownPrompt();
+          console.log("inside the showSlideDown")
+          setRemount(false)
+        });
+        // OneSignal.showSlidedownPrompt();
       } else if (permission == "granted") {
         OneSignal.showSlidedownPrompt();
         console.log("this guy don accepted")
@@ -103,7 +109,7 @@ function App() {
   }
   useEffect(() => {
     signalScriptLoad();
-  }, [])
+  }, [remount])
   return (
     <div className="App">
       <Login />
