@@ -66,6 +66,20 @@ function App() {
               modalPrompt: true
             })
           );
+          OneSignal.push(function () {
+            console.log("reached were i want")
+            OneSignal.getUserId(function (userId) {
+              if (userId == null && currentUserId == null) {
+                console.log("never show")
+              } else if (userId !== null && currentUserId == null) {
+                localStorage.setItem('userId', "sendingToBackEnd");
+                postIdToBackend(userId)
+              } else {
+                console.log("dead end")
+              }
+              // setRemount(false)
+            });
+          });
         }
 
       });
