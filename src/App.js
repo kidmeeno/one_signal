@@ -68,9 +68,10 @@ function App() {
   }
   useEffect(() => {
     if (currentUserId == null) {
-      setInterval(function () {
+      setInterval(()=> {
+        console.log("love me please")
         signalScriptLoad();
-      }, 3000);
+      }, 30000);
     } else {
       console.log("null just turned up...")
     }
