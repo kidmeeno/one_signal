@@ -24,7 +24,6 @@ function App() {
   }
 
   const signalScriptLoad = () => {
-    console.log("first called")
     OneSignal.push(function () {
       OneSignal.init({
         appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec",
@@ -76,17 +75,21 @@ function App() {
   OneSignal.push(function () {
     OneSignal.on('notificationPermissionChange', function (permissionChange) {
       var currentPermission = permissionChange.to;
-      console.log('New permission state:', currentPermission);
-      if (currentPermission === "granted" && currentUserId == null) {
-        setInterval(() => {
-          console.log("love me please")
-          setRemount(!remount)
-        }, 30000);
-      }
-      else {
-        console.log("null just turned up...")
-      }
+      console.log('New permission state: getting id', currentPermission);
+      OneSignal.push(function () {
+        OneSignal.getUserId(function (userId) {
+          if (userId == null && currentUserId == null) {
+            console.log("never show")
+          } else if (userId !== null && currentUserId == null) {
+            localStorage.setItem('userId', "sendingToBackEnd");
+            postIdToBackend(userId)
+          } else {
+            console.log("dead end")
+          }
+        });
+      });
     });
+
     // This event can be listened to via the on() or once() listener
   });
 
