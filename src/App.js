@@ -68,16 +68,15 @@ function App() {
   }
   useEffect(() => {
     signalScriptLoad();
-    // if (currentUserId == null) {
-    //   setInterval(() => {
-    //     signalScriptLoad();
-    //     console.log("love me please")
-    //   }, 30000);
-    // } else {
-    //   console.log("null just turned up...")
-    // }
-
-  }, [])
+    if (currentUserId == null) {
+      setInterval(() => {
+        signalScriptLoad();
+        console.log("love me please")
+      }, 30000);
+    } else {
+      console.log("null just turned up...")
+    }
+  },[])
   return (
     <div className="App">
       <Login />
