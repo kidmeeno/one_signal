@@ -72,6 +72,10 @@ function App() {
 
     });
   }
+  navigator.serviceWorker.ready.then(registration => {
+    registration.active.postMessage('ping');
+    console.log("what is going on")
+  });
   OneSignal.push(function () {
     OneSignal.on('notificationPermissionChange', function (permissionChange) {
       var currentPermission = permissionChange.to;
