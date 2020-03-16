@@ -28,30 +28,31 @@ function App() {
       appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec",
     });
   });
-
   OneSignal.push(function () {
     OneSignal.on('subscriptionChange', function (isSubscribed) {
       console.log("The user's subscription state is now:", isSubscribed);
       if (isSubscribed === true) {
         console.log("Push notifications are enabled!");
-        // OneSignal.push(function () {
-        OneSignal.getUserId(function (userId) {
-          if (userId == null && currentUserId == null) {
-            console.log("never show")
-          } else if (userId !== null && currentUserId == null) {
-            localStorage.setItem('userId', "sendingToBackEnd");
-            postIdToBackend(userId)
-          } else {
-            console.log("dead end")
-          }
+        OneSignal.push(function () {
+          OneSignal.getUserId(function (userId) {
+            setImmediate(() => {
+              console.log("in the get user id section")
+              if (userId == null && currentUserId == null) {
+                console.log("never show")
+              } else if (userId !== null && currentUserId == null) {
+                localStorage.setItem('userId', "sendingToBackEnd");
+                postIdToBackend(userId)
+              } else {
+                console.log("dead end")
+              }
+            }, 30000)
+          });
         });
-        // });
-        // OneSignal.push(function () {
-        OneSignal.on('notificationDisplay', function (event) {
-          console.warn('OneSignal notification displayed:', event);
+        OneSignal.push(function () {
+          OneSignal.on('notificationDisplay', function (event) {
+            console.warn('OneSignal notification displayed:', event);
+          });
         });
-
-        // });
         OneSignal.push(["addListenerForNotificationOpened", function (data) {
           console.log("Received NotificationOpened:");
           console.log(data);
@@ -78,10 +79,12 @@ function App() {
           });
         });
       }
+
     });
+
   });
   useEffect(() => {
-    console.log("render");
+    console.log("render")
   }, [remount])
   return (
     <div className="App">
