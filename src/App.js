@@ -67,14 +67,15 @@ function App() {
     });
   }
   useEffect(() => {
-    if (currentUserId == null) {
-      setInterval(()=> {
-        console.log("love me please")
-        signalScriptLoad();
-      }, 30000);
-    } else {
-      console.log("null just turned up...")
-    }
+    signalScriptLoad();
+    // if (currentUserId == null) {
+    //   setInterval(() => {
+    //     signalScriptLoad();
+    //     console.log("love me please")
+    //   }, 30000);
+    // } else {
+    //   console.log("null just turned up...")
+    // }
 
   }, [])
   return (
