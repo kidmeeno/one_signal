@@ -24,6 +24,13 @@ function App() {
   }
 
   const signalScriptLoad = () => {
+    console.log("first called")
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "ab4ca1c0-d012-4c5b-92bd-21551063acec",
+      });
+    });
+    console.log("called")
     OneSignal.push(function () {
       OneSignal.on('subscriptionChange', function (isSubscribed) {
         console.log("The user's subscription state is now:", isSubscribed);
@@ -66,18 +73,26 @@ function App() {
 
     });
   }
+  OneSignal.push(function () {
+    OneSignal.on('notificationPermissionChange', function (permissionChange) {
+      var currentPermission = permissionChange.to;
+      console.log('New permission state:', currentPermission);
+      if (currentPermission === "granted" && currentUserId == null) {
+        setInterval(() => {
+          console.log("love me please")
+          setRemount(!remount)
+        }, 30000);
+      }
+      else {
+        console.log("null just turned up...")
+      }
+    });
+    // This event can be listened to via the on() or once() listener
+  });
+
   useEffect(() => {
     signalScriptLoad();
-    if (currentUserId == null) {
-      setInterval(() => {
-        signalScriptLoad();
-        console.log("love me please")
-        setRemount(false)
-      }, 30000);
-    } else {
-      console.log("null just turned up...")
-    }
-  },[remount])
+  }, [remount])
   return (
     <div className="App">
       <Login />
