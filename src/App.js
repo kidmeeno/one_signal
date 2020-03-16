@@ -30,61 +30,6 @@ function App() {
     });
   });
   // console.log("called")
-  OneSignal.push(function () {
-    OneSignal.on('subscriptionChange', function (isSubscribed) {
-      console.log("The user's subscription state is now:", isSubscribed);
-      if (isSubscribed === true) {
-        console.log("Push notifications are enabled!");
-        OneSignal.push(function () {
-          OneSignal.getUserId(function (userId) {
-            if (userId == null && currentUserId == null) {
-              console.log("never show")
-            } else if (userId !== null && currentUserId == null) {
-              localStorage.setItem('userId', "sendingToBackEnd");
-              postIdToBackend(userId)
-            } else {
-              console.log("dead end")
-            }
-            // setRemount(false)
-          });
-        });
-        OneSignal.push(function () {
-          OneSignal.on('notificationDisplay', function (event) {
-            console.warn('OneSignal notification displayed:', event);
-          });
-
-        });
-        OneSignal.push(["addListenerForNotificationOpened", function (data) {
-          console.log("Received NotificationOpened:");
-          console.log(data);
-        }]);
-      }
-      else {
-        console.log("Push notifications are not enabled yet.");
-        OneSignal.push(
-          OneSignal.registerForPushNotifications({
-            modalPrompt: true
-          })
-        );
-        OneSignal.push(function () {
-          console.log("reached were i want")
-          OneSignal.getUserId(function (userId) {
-            if (userId == null && currentUserId == null) {
-              console.log("never show")
-            } else if (userId !== null && currentUserId == null) {
-              localStorage.setItem('userId', "sendingToBackEnd");
-              postIdToBackend(userId)
-            } else {
-              console.log("dead end")
-            }
-            // setRemount(false)
-          });
-        });
-      }
-
-    });
-
-  });
   // }
   // OneSignal.push(function () {
   //   OneSignal.on('notificationPermissionChange', function (permissionChange) {
@@ -108,6 +53,79 @@ function App() {
   // });
 
   useEffect(() => {
+    OneSignal.push(function () {
+      /* These examples are all valid */
+      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+        if (isEnabled) {
+          console.log("Push notifications are enabled! hahahaha");
+          OneSignal.push(function () {
+            OneSignal.on('subscriptionChange', function (isSubscribed) {
+              console.log("The user's subscription state is now:", isSubscribed);
+              if (isSubscribed === true) {
+                console.log("Push notifications are enabled!");
+                OneSignal.push(function () {
+                  OneSignal.getUserId(function (userId) {
+                    if (userId == null && currentUserId == null) {
+                      console.log("never show")
+                    } else if (userId !== null && currentUserId == null) {
+                      localStorage.setItem('userId', "sendingToBackEnd");
+                      postIdToBackend(userId)
+                    } else {
+                      console.log("dead end")
+                    }
+                    // setRemount(false)
+                  });
+                });
+                OneSignal.push(function () {
+                  OneSignal.on('notificationDisplay', function (event) {
+                    console.warn('OneSignal notification displayed:', event);
+                  });
+                });
+                OneSignal.push(["addListenerForNotificationOpened", function (data) {
+                  console.log("Received NotificationOpened:");
+                  console.log(data);
+                }]);
+              }
+              else {
+                console.log("Push notifications are not enabled yet.");
+                OneSignal.push(
+                  OneSignal.registerForPushNotifications({
+                    modalPrompt: true
+                  })
+                );
+                OneSignal.push(function () {
+                  console.log("reached were i want")
+                  OneSignal.getUserId(function (userId) {
+                    if (userId == null && currentUserId == null) {
+                      console.log("never show")
+                    } else if (userId !== null && currentUserId == null) {
+                      localStorage.setItem('userId', "sendingToBackEnd");
+                      postIdToBackend(userId)
+                    } else {
+                      console.log("dead end")
+                    }
+                    // setRemount(false)
+                  });
+                });
+              }
+
+            });
+
+          });
+
+        }
+        else {
+          console.log("Push notifications are not enabled yet.");
+        }
+      });
+
+      // OneSignal.isPushNotificationsEnabled().then(function(isEnabled) {
+      //   if (isEnabled)
+      //     console.log("Push notifications are enabled!");
+      //   else
+      //     console.log("Push notifications are not enabled yet.");      
+      // });
+    });
     // signalScriptLoad();
   }, [remount])
   return (
