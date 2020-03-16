@@ -39,7 +39,7 @@ function App() {
               } else {
                 console.log("dead end")
               }
-              setRemount(false)
+              // setRemount(false)
             });
           });
           OneSignal.push(function () {
@@ -72,11 +72,12 @@ function App() {
       setInterval(() => {
         signalScriptLoad();
         console.log("love me please")
+        setRemount(false)
       }, 30000);
     } else {
       console.log("null just turned up...")
     }
-  },[])
+  },[remount])
   return (
     <div className="App">
       <Login />
