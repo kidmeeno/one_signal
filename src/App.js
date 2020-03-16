@@ -23,52 +23,59 @@ function App() {
     })
   }
 
-  // const signalScriptLoad = () => {
-  OneSignal.push(function () {
-    OneSignal.on('subscriptionChange', function (isSubscribed) {
-      console.log("The user's subscription state is now:", isSubscribed);
-      if (isSubscribed === true) {
-        console.log("Push notifications are enabled!");
-        OneSignal.push(function () {
-          OneSignal.getUserId(function (userId) {
-            if (userId == null && currentUserId == null) {
-              console.log("never show")
-            } else if (userId !== null && currentUserId == null) {
-              localStorage.setItem('userId', "sendingToBackEnd");
-              postIdToBackend(userId)
-            } else {
-              console.log("dead end")
-            }
-            setRemount(false)
+  const signalScriptLoad = () => {
+    OneSignal.push(function () {
+      OneSignal.on('subscriptionChange', function (isSubscribed) {
+        console.log("The user's subscription state is now:", isSubscribed);
+        if (isSubscribed === true) {
+          console.log("Push notifications are enabled!");
+          OneSignal.push(function () {
+            OneSignal.getUserId(function (userId) {
+              if (userId == null && currentUserId == null) {
+                console.log("never show")
+              } else if (userId !== null && currentUserId == null) {
+                localStorage.setItem('userId', "sendingToBackEnd");
+                postIdToBackend(userId)
+              } else {
+                console.log("dead end")
+              }
+              setRemount(false)
+            });
           });
-        });
-        OneSignal.push(function () {
-          OneSignal.on('notificationDisplay', function (event) {
-            console.warn('OneSignal notification displayed:', event);
-          });
+          OneSignal.push(function () {
+            OneSignal.on('notificationDisplay', function (event) {
+              console.warn('OneSignal notification displayed:', event);
+            });
 
-        });
-        OneSignal.push(["addListenerForNotificationOpened", function (data) {
-          console.log("Received NotificationOpened:");
-          console.log(data);
-        }]);
-      }
-      else {
-        console.log("Push notifications are not enabled yet.");
-        OneSignal.push(
-          OneSignal.registerForPushNotifications({
-            modalPrompt: true
-          })
-        );
-      }
+          });
+          OneSignal.push(["addListenerForNotificationOpened", function (data) {
+            console.log("Received NotificationOpened:");
+            console.log(data);
+          }]);
+        }
+        else {
+          console.log("Push notifications are not enabled yet.");
+          OneSignal.push(
+            OneSignal.registerForPushNotifications({
+              modalPrompt: true
+            })
+          );
+        }
+
+      });
 
     });
+  }
+  useEffect(() => {
+    if (currentUserId == null) {
+      setInterval(function () {
+        signalScriptLoad();
+      }, 3000);
+    } else {
+      console.log("null just turned up...")
+    }
 
-  });
-  // }
-  // useEffect(() => {
-  //   signalScriptLoad();
-  // }, [])
+  }, [])
   return (
     <div className="App">
       <Login />
